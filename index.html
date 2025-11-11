@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Leadership Micro-Skills Flashcards</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#151923; --ink:#e9edf1; --muted:#9aa3b2;
+    --accent:#6ad3a1; --accent-2:#7aa7ff; --danger:#ff6b6b;
+    --card:#1b2130; --card-flip:#0f1115;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Arial;
+    color:var(--ink); background:linear-gradient(180deg,#0d1117,#0b1020 55%,#0e1322);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .app{
+    width:min(980px,100%); background:var(--panel); border:1px solid #222a3a;
+    border-radius:18px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  header{
+    display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    border-bottom:1px solid #222a3a; padding-bottom:10px; margin-bottom:14px;
+  }
+  .title{font-weight:700; letter-spacing:.2px}
+  .small{color:var(--muted); font-size:.9rem}
+  .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  button, select{
+    background:#111827; color:var(--ink); border:1px solid #2b3448; border-radius:10px;
+    padding:10px 12px; cursor:pointer; transition:.15s all ease;
+  }
+  button:hover{border-color:#3a4560}
+  .primary{background:linear-gradient(180deg,#1f2937,#162030); border-color:#3a4560}
+  .accent{background:linear-gradient(180deg,#1a2b23,#14231d); border-color:#2c6e53; color:#b6f2d5}
+  .danger{background:linear-gradient(180deg,#2b1a1a,#1e1414); border-color:#6e2c2c; color:#ffd1d1}
+  .pill{border-radius:999px}
+  .card-wrap{
+    display:grid; grid-template-columns:1fr 300px; gap:14px;
+  }
+  @media (max-width:860px){ .card-wrap{grid-template-columns:1fr} }
+  .stage{
+    display:grid; place-items:center; min-height:340px; padding:10px;
+    border:1px dashed #293145; border-radius:14px; background:#0f131d;
+  }
+  .card{
+    width:min(520px,90%); min-height:220px; perspective:1200px;
+  }
+  .face{
+    position:relative; width:100%; min-height:220px; padding:22px;
+    border-radius:16px; border:1px solid #2a3246; background:var(--card);
+    transform-style:preserve-3d; transition:transform .55s cubic-bezier(.2,.7,.2,1);
+    box-shadow:0 12px 32px rgba(0,0,0,.35);
+  }
+  .flipped .face{ transform:rotateY(180deg); }
+  .front, .back{
+    position:absolute; inset:0; padding:22px; border-radius:16px;
+    backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center;
+  }
+  .back{ transform:rotateY(180deg); background:var(--card-flip); border:1px solid #2a3246;}
+  .prompt{font-size:1.6rem; line-height:1.35; font-weight:700}
+  .sub{color:var(--muted); margin-top:10px}
+  .controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .side{
+    border:1px solid #27304a; border-radius:14px; padding:14px; background:#0e1422;
+  }
+  .kpi{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px}
+  .kpi div{background:#101726; border:1px solid #2b3448; padding:10px; border-radius:10px; text-align:center}
+  .progress{height:8px; background:#1a2236; border-radius:999px; overflow:hidden}
+  .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-2));}
+  .list{margin-top:10px; font-size:.95rem; color:#b8c0cf}
+  .footer{display:flex; justify-content:space-between; align-items:center; margin-top:12px; color:var(--muted)}
+  a{color:#9ac0ff}
+</style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Leadership Micro-Skills Flashcards">
+    <header>
+      <div>
+        <div class="title">Leadership Micro-Skills — Flashcards</div>
+        <div class="small">Flip (Space/Enter), Next (→), Prev (←). Shuffle to start fresh. Study or Quiz mode.</div>
+      </div>
+      <div class="row">
+        <button id="shuffle" class="accent pill">Shuffle</button>
+        <select id="mode">
+          <option value="study">Study mode</option>
+          <option value="quiz">Quiz mode</option>
+        </select>
+        <button id="reset" class="danger pill" title="Clear saved progress">Reset Progress</button>
+      </div>
+    </header>
+
+    <div class="card-wrap">
+      <section class="stage">
+        <div id="card" class="card" tabindex="0" aria-live="polite">
+          <div class="face">
+            <div class="front">
+              <div class="prompt" id="frontText"></div>
+              <div class="sub" id="frontHint"></div>
+            </div>
+            <div class="back">
+              <div class="prompt" id="backText"></div>
+              <div class="sub" id="backHint"></div>
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <button id="prev">← Prev</button>
+          <button id="flip" class="primary">Flip (Space)</button>
+          <button id="next">Next →</button>
+          <button id="gotit" class="accent">Got it ✓</button>
+          <button id="again">Again ⟲</button>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="kpi">
+          <div><strong id="seen">0</strong><br/><span class="small">Seen</span></div>
+          <div><strong id="mastered">0</strong><br/><span class="small">Mastered</span></div>
+        </div>
+        <div class="small">Progress</div>
+        <div class="progress" aria-hidden="true"><div id="bar" class="bar"></div></div>
+        <div class="list" id="deckList"></div>
+        <div class="footer">
+          <span class="small">Deck: 10 cards</span>
+          <a id="export" href="#" download="leadership-progress.json">Export progress</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+<script>
+/* ----- Deck (10 flashcards): term → plain, punchy explanation ----- */
+const DECK = [
+ {term:"Active Listening", back:"Listen to understand, not to reply. Mirror, label, and summarize before giving direction."},
+ {term:"Framing Expectations", back:"State the what, why, how, and by-when—then confirm understanding aloud."},
+ {term:"Clarifying Purpose", back:"Tie the task to mission and people. ‘This matters because…’ keeps effort aligned."},
+ {term:"Check-Backs", back:"Use brief, non-threatening confirmation loops: ‘What’s your plan? Anything you need?’"},
+ {term:"Tactical Empathy", back:"Name feelings and constraints so people feel seen; it lowers resistance to change."},
+ {term:"Feedback—Task First", back:"Future-focused, behavior-specific: what to keep, change, and try next time."},
+ {term:"Set Boundaries", back:"Protect recovery: set office hours, ‘no-meeting’ blocks, and realistic WIP limits."},
+ {term:"Decision Journal", back:"Write assumptions, risks, and triggers for review. Speeds learning from outcomes."},
+ {term:"Debrief Rhythm", back:"Short, routine AARs: what happened, why, what we’ll do different on the next rep."},
+ {term:"Two-Way Updates", back:"Leaders share context; team shares capacity. Prevents silent overload and surprises."},
+];
+
+/* ----- State ----- */
+let order = [...DECK.keys()];
+let i = 0;
+let flipped = false;
+let mastered = new Set(JSON.parse(localStorage.getItem("mastered-v1")||"[]"));
+let seen = new Set(JSON.parse(localStorage.getItem("seen-v1")||"[]"));
+const $ = (id)=>document.getElementById(id);
+
+function render(){
+  const c = DECK[order[i]];
+  $("frontText").textContent = c.term;
+  $("frontHint").textContent = "Press Flip to view the coaching move.";
+  $("backText").textContent = c.back;
+  $("backHint").textContent = "Press Prev/Next or mark ✓ Got it.";
+  document.querySelector(".card").classList.toggle("flipped", flipped);
+  $("seen").textContent = seen.size;
+  $("mastered").textContent = mastered.size;
+  $("bar").style.width = (mastered.size/DECK.length*100)+"%";
+  $("deckList").innerHTML = order.map((idx, n)=>{
+     const got = mastered.has(idx) ? "✓" : "•";
+     const cur = (n===i) ? " <span style='color:#9ac0ff'>(now)</span>" : "";
+     return `${n+1}. ${DECK[idx].term} <span style="color:#6ad3a1">${got}</span>${cur}`;
+  }).join("<br/>");
+}
+function flip(){ flipped = !flipped; render(); }
+function next(){ i = (i+1)%order.length; flipped=false; seen.add(order[i]); save(); render(); }
+function prev(){ i = (i-1+order.length)%order.length; flipped=false; render(); }
+function shuffle(){
+  order = [...DECK.keys()].sort(()=>Math.random()-0.5);
+  i = 0; flipped=false; seen.add(order[i]); save(); render();
+}
+function markGotIt(){ mastered.add(order[i]); save(); next(); }
+function markAgain(){ mastered.delete(order[i]); save(); next(); }
+function save(){
+  localStorage.setItem("mastered-v1", JSON.stringify([...mastered]));
+  localStorage.setItem("seen-v1", JSON.stringify([...seen]));
+}
+function resetAll(){
+  mastered.clear(); seen.clear(); localStorage.removeItem("mastered-v1"); localStorage.removeItem("seen-v1");
+  flipped=false; i=0; order=[...DECK.keys()]; render();
+}
+function setMode(v){
+  // quiz mode: auto-hide the back until flipped; study: allow free flipping
+  document.body.dataset.mode = v;
+}
+
+/* ----- Events ----- */
+$("flip").onclick = flip;
+$("next").onclick = next;
+$("prev").onclick = prev;
+$("shuffle").onclick = shuffle;
+$("gotit").onclick = markGotIt;
+$("again").onclick = markAgain;
+$("reset").onclick = resetAll;
+$("mode").onchange = (e)=>setMode(e.target.value);
+$("card").addEventListener("keydown",(e)=>{
+  if(e.key===" "||e.key==="Enter"){ e.preventDefault(); flip(); }
+  if(e.key==="ArrowRight"){ next(); }
+  if(e.key==="ArrowLeft"){ prev(); }
+});
+$("export").addEventListener("click",(e)=>{
+  const data = {mastered:[...mastered], seen:[...seen], order, index:i, ts:new Date().toISOString()};
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+  e.target.href = URL.createObjectURL(blob);
+});
+
+/* ----- Init ----- */
+seen.add(order[i]); setMode("study"); render();
+</script>
+</body>
+</html>
