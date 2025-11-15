@@ -4,75 +4,164 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Leadership Micro-Skills Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Manrope:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0f1115; --panel:#151923; --ink:#e9edf1; --muted:#9aa3b2;
-    --accent:#6ad3a1; --accent-2:#7aa7ff; --danger:#ff6b6b;
-    --card:#1b2130; --card-flip:#0f1115;
+    --bg:#0a0e1a; --panel:#0f1422; --ink:#f0f4f8; --muted:#94a3b8;
+    --accent:#34d399; --accent-2:#60a5fa; --danger:#f87171;
+    --card:#141b2d; --card-flip:#0b1120;
+    --glow:#1e293b; --gradient:linear-gradient(135deg,#1e3a8a,#0f172a);
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{height:100%; overflow:hidden}
   body{
-    margin:0; font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Arial;
-    color:var(--ink); background:linear-gradient(180deg,#0d1117,#0b1020 55%,#0e1322);
-    display:flex; align-items:center; justify-content:center; padding:24px;
+    font-family:'Manrope',ui-sans-serif,system-ui,Segoe UI,Roboto,Arial;
+    color:var(--ink); background:var(--bg);
+    display:flex; align-items:center; justify-content:center; padding:16px;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(52,211,153,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(96,165,250,0.12) 0%, transparent 50%);
   }
   .app{
-    width:min(980px,100%); background:var(--panel); border:1px solid #222a3a;
-    border-radius:18px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.35);
+    width:min(1020px,100%); background:var(--panel); border:1px solid #1e293b;
+    border-radius:20px; padding:20px; box-shadow:0 20px 50px rgba(0,0,0,.5),
+      0 0 60px rgba(52,211,153,.15);
+    position:relative; overflow:hidden;
+  }
+  .app::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg,transparent 0%,rgba(10,14,26,.4) 100%);
   }
   header{
-    display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
-    border-bottom:1px solid #222a3a; padding-bottom:10px; margin-bottom:14px;
+    display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    border-bottom:1px solid #1e293b; padding-bottom:12px; margin-bottom:16px;
+    position:relative; z-index:2;
   }
-  .title{font-weight:700; letter-spacing:.2px}
-  .small{color:var(--muted); font-size:.9rem}
-  .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .title{
+    font-family:'Inter',sans-serif; font-weight:700; font-size:1.55rem;
+    letter-spacing:-.3px; background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .small{color:var(--muted); font-size:.88rem}
+  .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
   button, select{
-    background:#111827; color:var(--ink); border:1px solid #2b3448; border-radius:10px;
-    padding:10px 12px; cursor:pointer; transition:.15s all ease;
+    background:#111827; color:var(--ink); border:1px solid #1e293b; border-radius:12px;
+    padding:10px 14px; cursor:pointer; transition:all .2s ease; font-weight:600;
+    font-size:.9rem; position:relative; overflow:hidden;
   }
-  button:hover{border-color:#3a4560}
-  .primary{background:linear-gradient(180deg,#1f2937,#162030); border-color:#3a4560}
-  .accent{background:linear-gradient(180deg,#1a2b23,#14231d); border-color:#2c6e53; color:#b6f2d5}
-  .danger{background:linear-gradient(180deg,#2b1a1a,#1e1414); border-color:#6e2c2c; color:#ffd1d1}
+  button::before{
+    content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.08),transparent);
+    opacity:0; transition:opacity .2s;
+  }
+  button:hover::before{opacity:1}
+  button:hover{border-color:#334155}
+  .primary{background:linear-gradient(135deg,#1e293b,#111827); border-color:#334155}
+  .accent{
+    background:linear-gradient(135deg,#064e3b,#022c22); border-color:#065f46;
+    color:#a7f3d0; box-shadow:0 4px 12px rgba(52,211,153,.2);
+  }
+  .danger{
+    background:linear-gradient(135deg,#450a0a,#1f0a0a); border-color:#7f1d1d;
+    color:#fca5a5; box-shadow:0 4px 12px rgba(248,113,113,.2);
+  }
   .pill{border-radius:999px}
   .card-wrap{
-    display:grid; grid-template-columns:1fr 300px; gap:14px;
+    display:grid; grid-template-columns:1fr 320px; gap:18px;
   }
   @media (max-width:860px){ .card-wrap{grid-template-columns:1fr} }
   .stage{
-    display:grid; place-items:center; min-height:340px; padding:10px;
-    border:1px dashed #293145; border-radius:14px; background:#0f131d;
+    display:grid; place-items:center; min-height:360px; padding:12px;
+    border:1px dashed #1e293b; border-radius:16px; background:#0b1120;
+    position:relative; overflow:hidden;
+  }
+  .stage::before{
+    content:""; position:absolute; inset:0; opacity:.3;
+    background:radial-gradient(circle at center, rgba(52,211,153,.15), transparent 70%);
+    pointer-events:none;
   }
   .card{
-    width:min(520px,90%); min-height:220px; perspective:1200px;
+    width:min(540px,92%); min-height:240px; perspective:1400px;
+    position:relative;
   }
   .face{
-    position:relative; width:100%; min-height:220px; padding:22px;
-    border-radius:16px; border:1px solid #2a3246; background:var(--card);
-    transform-style:preserve-3d; transition:transform .55s cubic-bezier(.2,.7,.2,1);
-    box-shadow:0 12px 32px rgba(0,0,0,.35);
+    position:relative; width:100%; min-height:240px; padding:28px;
+    border-radius:18px; border:1px solid #1e293b; background:var(--card);
+    transform-style:preserve-3d; transition:transform .65s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 16px 40px rgba(0,0,0,.45), 0 0 30px rgba(52,211,153,.12);
   }
   .flipped .face{ transform:rotateY(180deg); }
   .front, .back{
-    position:absolute; inset:0; padding:22px; border-radius:16px;
+    position:absolute; inset:0; padding:28px; border-radius:18px;
     backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center;
+    background:var(--gradient);
   }
-  .back{ transform:rotateY(180deg); background:var(--card-flip); border:1px solid #2a3246;}
-  .prompt{font-size:1.6rem; line-height:1.35; font-weight:700}
-  .sub{color:var(--muted); margin-top:10px}
-  .controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+  .back{ transform:rotateY(180deg); background:var(--card-flip); border:1px solid #1e293b;}
+  .icon{
+    width:56px; height:56px; margin-bottom:16px; align-self:center;
+    background:var(--accent); border-radius:50%; display:grid; place-items:center;
+    font-size:1.8rem; color:#064e3b; box-shadow:0 8px 20px rgba(52,211,153,.3);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1); box-shadow:0 8px 20px rgba(52,211,153,.3)}
+    50%{transform:scale(1.05); box-shadow:0 12px 28px rgba(52,211,153,.45)}
+  }
+  .prompt{
+    font-family:'Inter',sans-serif; font-size:1.75rem; line-height:1.3; font-weight:700;
+    text-align:center; background:linear-gradient(90deg,var(--ink),#cbd5e1);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .sub{
+    color:var(--muted); margin-top:12px; text-align:center; font-size:.95rem;
+    font-style:italic;
+  }
+  .controls{
+    display:flex; gap:12px; flex-wrap:wrap; margin-top:20px; justify-content:center;
+  }
   .side{
-    border:1px solid #27304a; border-radius:14px; padding:14px; background:#0e1422;
+    border:1px solid #1e293b; border-radius:16px; padding:16px; background:#0b1120;
+    box-shadow:0 8px 24px rgba(0,0,0,.3);
   }
-  .kpi{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px}
-  .kpi div{background:#101726; border:1px solid #2b3448; padding:10px; border-radius:10px; text-align:center}
-  .progress{height:8px; background:#1a2236; border-radius:999px; overflow:hidden}
-  .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-2));}
-  .list{margin-top:10px; font-size:.95rem; color:#b8c0cf}
-  .footer{display:flex; justify-content:space-between; align-items:center; margin-top:12px; color:var(--muted)}
-  a{color:#9ac0ff}
+  .kpi{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;
+  }
+  .kpi div{
+    background:#111827; border:1px solid #1e293b; padding:12px; border-radius:12px;
+    text-align:center; transition:transform .2s;
+  }
+  .kpi div:hover{transform:translateY(-2px)}
+  .progress{
+    height:10px; background:#1e293b; border-radius:999px; overflow:hidden;
+    margin:8px 0; box-shadow:inset 0 2px 4px rgba(0,0,0,.3);
+  }
+  .bar{
+    height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow:0 0 12px rgba(52,211,153,.5); transition:width .4s ease;
+  }
+  .list{
+    margin-top:12px; font-size:.94rem; color:#94a3b8; line-height:1.5;
+    max-height:180px; overflow-y:auto; padding-right:6px;
+  }
+  .list::-webkit-scrollbar{width:6px}
+  .list::-webkit-scrollbar-thumb{background:#334155; border-radius:3px}
+  .footer{
+    display:flex; justify-content:space-between; align-items:center; margin-top:14px; color:var(--muted);
+    font-size:.85rem;
+  }
+  a{color:#93c5fd; text-decoration:none; transition:color .2s}
+  a:hover{color:var(--accent-2)}
+  .particle{
+    position:absolute; width:4px; height:4px; background:var(--accent);
+    border-radius:50%; opacity:0; pointer-events:none;
+    animation:sparkle 1.5s ease-out forwards;
+  }
+  @keyframes sparkle{
+    0%{transform:translateY(0) scale(0); opacity:0}
+    50%{opacity:1}
+    100%{transform:translateY(-80px) scale(1.5); opacity:0}
+  }
 </style>
 </head>
 <body>
@@ -91,16 +180,17 @@
         <button id="reset" class="danger pill" title="Clear saved progress">Reset Progress</button>
       </div>
     </header>
-
     <div class="card-wrap">
-      <section class="stage">
+      <section class="stage" id="stage">
         <div id="card" class="card" tabindex="0" aria-live="polite">
           <div class="face">
             <div class="front">
+              <div class="icon" id="frontIcon">🎯</div>
               <div class="prompt" id="frontText"></div>
               <div class="sub" id="frontHint"></div>
             </div>
             <div class="back">
+              <div class="icon" id="backIcon">💡</div>
               <div class="prompt" id="backText"></div>
               <div class="sub" id="backHint"></div>
             </div>
@@ -114,7 +204,6 @@
           <button id="again">Again ⟲</button>
         </div>
       </section>
-
       <aside class="side">
         <div class="kpi">
           <div><strong id="seen">0</strong><br/><span class="small">Seen</span></div>
@@ -130,35 +219,45 @@
       </aside>
     </div>
   </div>
-
 <script>
-/* ----- Deck (10 flashcards): term → plain, punchy explanation ----- */
+/* ----- Deck with emoji icons ----- */
 const DECK = [
- {term:"Active Listening", back:"Listen to understand, not to reply. Mirror, label, and summarize before giving direction."},
- {term:"Framing Expectations", back:"State the what, why, how, and by-when—then confirm understanding aloud."},
- {term:"Clarifying Purpose", back:"Tie the task to mission and people. ‘This matters because…’ keeps effort aligned."},
- {term:"Check-Backs", back:"Use brief, non-threatening confirmation loops: ‘What’s your plan? Anything you need?’"},
- {term:"Tactical Empathy", back:"Name feelings and constraints so people feel seen; it lowers resistance to change."},
- {term:"Feedback—Task First", back:"Future-focused, behavior-specific: what to keep, change, and try next time."},
- {term:"Set Boundaries", back:"Protect recovery: set office hours, ‘no-meeting’ blocks, and realistic WIP limits."},
- {term:"Decision Journal", back:"Write assumptions, risks, and triggers for review. Speeds learning from outcomes."},
- {term:"Debrief Rhythm", back:"Short, routine AARs: what happened, why, what we’ll do different on the next rep."},
- {term:"Two-Way Updates", back:"Leaders share context; team shares capacity. Prevents silent overload and surprises."},
+ {term:"Active Listening", back:"Listen to understand, not to reply. Mirror, label, and summarize before giving direction.", icon:"👂"},
+ {term:"Framing Expectations", back:"State the what, why, how, and by-when—then confirm understanding aloud.", icon:"📋"},
+ {term:"Clarifying Purpose", back:"Tie the task to mission and people. ‘This matters because…’ keeps effort aligned.", icon:"🎯"},
+ {term:"Check-Backs", back:"Use brief, non-threatening confirmation loops: ‘What’s your plan? Anything you need?’", icon:"🔄"},
+ {term:"Tactical Empathy", back:"Name feelings and constraints so people feel seen; it lowers resistance to change.", icon:"🤝"},
+ {term:"Feedback—Task First", back:"Future-focused, behavior-specific: what to keep, change, and try next time.", icon:"📈"},
+ {term:"Set Boundaries", back:"Protect recovery: set office hours, ‘no-meeting’ blocks, and realistic WIP limits.", icon:"⏰"},
+ {term:"Decision Journal", back:"Write assumptions, risks, and triggers for review. Speeds learning from outcomes.", icon:"📓"},
+ {term:"Debrief Rhythm", back:"Short, routine AARs: what happened, why, what we’ll do different on the next rep.", icon:"🔍"},
+ {term:"Two-Way Updates", back:"Leaders share context; team shares capacity. Prevents silent overload and surprises.", icon:"↔️"},
 ];
-
 /* ----- State ----- */
 let order = [...DECK.keys()];
 let i = 0;
 let flipped = false;
-let mastered = new Set(JSON.parse(localStorage.getItem("mastered-v1")||"[]"));
-let seen = new Set(JSON.parse(localStorage.getItem("seen-v1")||"[]"));
+let mastered = new Set(JSON.parse(localStorage.getItem("mastered-v2")||"[]"));
+let seen = new Set(JSON.parse(localStorage.getItem("seen-v2")||"[]"));
 const $ = (id)=>document.getElementById(id);
+const stage = $("stage");
+
+function createParticle(x,y){
+  const p = document.createElement("div");
+  p.className="particle";
+  p.style.left=(x-2)+"px";
+  p.style.top=(y-2)+"px";
+  stage.appendChild(p);
+  setTimeout(()=>p.remove(),1600);
+}
 
 function render(){
   const c = DECK[order[i]];
   $("frontText").textContent = c.term;
+  $("frontIcon").textContent = c.icon;
   $("frontHint").textContent = "Press Flip to view the coaching move.";
   $("backText").textContent = c.back;
+  $("backIcon").textContent = "💡";
   $("backHint").textContent = "Press Prev/Next or mark ✓ Got it.";
   document.querySelector(".card").classList.toggle("flipped", flipped);
   $("seen").textContent = seen.size;
@@ -166,32 +265,51 @@ function render(){
   $("bar").style.width = (mastered.size/DECK.length*100)+"%";
   $("deckList").innerHTML = order.map((idx, n)=>{
      const got = mastered.has(idx) ? "✓" : "•";
-     const cur = (n===i) ? " <span style='color:#9ac0ff'>(now)</span>" : "";
-     return `${n+1}. ${DECK[idx].term} <span style="color:#6ad3a1">${got}</span>${cur}`;
+     const cur = (n===i) ? " <span style='color:#93c5fd'>(now)</span>" : "";
+     return `${n+1}. ${DECK[idx].icon} ${DECK[idx].term} <span style="color:#34d399">${got}</span>${cur}`;
   }).join("<br/>");
 }
-function flip(){ flipped = !flipped; render(); }
+function flip(){
+  flipped = !flipped; render();
+  // sparkle on flip
+  const card = $("card");
+  const rect = card.getBoundingClientRect();
+  for(let k=0;k<8;k++){
+    setTimeout(()=>createParticle(
+      rect.left + rect.width/2 + (Math.random()-0.5)*120,
+      rect.top + rect.height/2 + (Math.random()-0.5)*80
+    ), k*80);
+  }
+}
 function next(){ i = (i+1)%order.length; flipped=false; seen.add(order[i]); save(); render(); }
 function prev(){ i = (i-1+order.length)%order.length; flipped=false; render(); }
 function shuffle(){
   order = [...DECK.keys()].sort(()=>Math.random()-0.5);
   i = 0; flipped=false; seen.add(order[i]); save(); render();
 }
-function markGotIt(){ mastered.add(order[i]); save(); next(); }
+function markGotIt(){
+  mastered.add(order[i]); save(); next();
+  // confetti on master
+  for(let k=0;k<12;k++){
+    setTimeout(()=>createParticle(
+      window.innerWidth/2 + (Math.random()-0.5)*300,
+      window.innerHeight/2
+    ), k*60);
+  }
+}
 function markAgain(){ mastered.delete(order[i]); save(); next(); }
 function save(){
-  localStorage.setItem("mastered-v1", JSON.stringify([...mastered]));
-  localStorage.setItem("seen-v1", JSON.stringify([...seen]));
+  localStorage.setItem("mastered-v2", JSON.stringify([...mastered]));
+  localStorage.setItem("seen-v2", JSON.stringify([...seen]));
 }
 function resetAll(){
-  mastered.clear(); seen.clear(); localStorage.removeItem("mastered-v1"); localStorage.removeItem("seen-v1");
+  mastered.clear(); seen.clear();
+  localStorage.removeItem("mastered-v2"); localStorage.removeItem("seen-v2");
   flipped=false; i=0; order=[...DECK.keys()]; render();
 }
 function setMode(v){
-  // quiz mode: auto-hide the back until flipped; study: allow free flipping
   document.body.dataset.mode = v;
 }
-
 /* ----- Events ----- */
 $("flip").onclick = flip;
 $("next").onclick = next;
@@ -211,7 +329,6 @@ $("export").addEventListener("click",(e)=>{
   const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
   e.target.href = URL.createObjectURL(blob);
 });
-
 /* ----- Init ----- */
 seen.add(order[i]); setMode("study"); render();
 </script>
